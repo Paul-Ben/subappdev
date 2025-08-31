@@ -27,9 +27,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     
     // User Management
     Route::resource('users', UserController::class, ['as' => 'admin']);
-    Route::patch('/users/{user}/toggle-verification', [UserController::class, 'toggleVerification'])->name('admin.users.toggle-verification');
+    Route::patch('/users/{user}/toggle-verification', [UserController::class, 'toggleVerification'])->name('admin.users.toggleVerification');
     Route::post('/users/{user}/impersonate', [UserController::class, 'impersonate'])->name('admin.users.impersonate');
-    Route::post('/stop-impersonating', [UserController::class, 'stopImpersonating'])->name('admin.users.stop-impersonating');
+    Route::post('/stop-impersonating', [UserController::class, 'stopImpersonating'])->name('admin.users.stopImpersonating');
     
     // Subscription Plans
     Route::resource('subscription-plans', SubscriptionPlanController::class);
@@ -43,7 +43,7 @@ Route::middleware(['auth', 'role:user,admin'])->prefix('user')->group(function (
 // Redirect after login based on role
 Route::middleware('auth')->get('/dashboard', function () {
     $user = Auth::user();
-    if ($user && $user->roles()->where('name', 'admin')->exists()) {
+    if ($user && $user->hasRole('admin')) {
         return redirect()->route('admin.dashboard');
     }
     return redirect()->route('user.dashboard');
