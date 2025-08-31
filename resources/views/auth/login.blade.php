@@ -1,47 +1,146 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Log In | Virtual Meeting App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully responsive admin theme which can be used to build CRM, CMS,ERP etc." name="description" />
+    <meta content="Techzaa" name="author" />
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    <!-- Theme Config Js -->
+    <script src="{{asset('assets/js/config.js')}}"></script>
+
+    <!-- App css -->
+    <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" id="app-style" />
+
+    <!-- Icons css -->
+    <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="authentication-bg position-relative" style="height: 100vh;">
+    <div class="account-pages p-sm-5  position-relative">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-9 col-lg-11">
+                    <div class="card overflow-hidden">
+                        <div class="row g-0">
+                            <div class="col-lg-6">
+                                <div class="d-flex flex-column h-100">
+                                    <div class="auth-brand p-4 text-center">
+                                        <a href="index.html" class="logo-light">
+                                            <img src="{{asset('assets/images/logo.png')}}" alt="logo" height="28">
+                                        </a>
+                                        <a href="index.html" class="logo-dark">
+                                            <img src="{{asset('assets/images/logo-dark.png')}}" alt="dark logo" height="28">
+                                        </a>
+                                    </div>
+                                    <div class="p-4 my-auto text-center">
+                                        <h4 class="fs-20">Sign In</h4>
+                                        <p class="text-muted mb-4">Enter your email address and password to <br> access
+                                            account.
+                                        </p>
+
+                                        <!-- form -->
+                                        <form action="{{route('login')}}" method="POST" class="text-start">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="emailaddress" class="form-label">Email address</label>
+                                                <input class="form-control @error('email') is-invalid @enderror" type="email" id="email" value="{{ old('email') }}"
+                                                    name="email"
+                                                    required autofocus autocomplete="email" placeholder="Enter your email">
+                                                @error('email')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <a href="auth-forgotpw.html" class="text-muted float-end"><small>Forgot
+                                                        your
+                                                        password?</small></a>
+                                                <label for="password" class="form-label">Password</label>
+                                                <input class="form-control @error('password') is-invalid @enderror"
+                                                    type="password" name='password' required autocomplete="current-password"
+                                                    placeholder="Enter your password" id="password">
+                                                @error('password')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="form-check">
+                                                    <input type="checkbox" class="form-check-input"
+                                                        id="checkbox-signin">
+                                                    <label class="form-check-label" for="checkbox-signin">Remember
+                                                        me</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-0 text-start">
+                                                <button class="btn btn-soft-primary w-100" type="submit"><i
+                                                        class="ri-login-circle-fill me-1"></i> <span class="fw-bold">Log
+                                                        In</span> </button>
+                                            </div>
+
+                                            {{-- <div class="text-center mt-4">
+                                                <p class="text-muted fs-16">Sign in with</p>
+                                                <div class="d-flex gap-2 justify-content-center mt-3">
+                                                    <a href="javascript: void(0);" class="btn btn-soft-primary"><i
+                                                            class="ri-facebook-circle-fill"></i></a>
+                                                    <a href="javascript: void(0);" class="btn btn-soft-danger"><i
+                                                            class="ri-google-fill"></i></a>
+                                                    <a href="javascript: void(0);" class="btn btn-soft-info"><i
+                                                            class="ri-twitter-fill"></i></a>
+                                                    <a href="javascript: void(0);" class="btn btn-soft-dark"><i
+                                                            class="ri-github-fill"></i></a>
+                                                </div>
+                                            </div> --}}
+                                        </form>
+                                        <!-- end form-->
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <img src="{{ asset('assets/images/auth-img.jpg') }}" alt=""
+                                    class="img-fluid rounded h-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="text-dark-emphasis">Don't have an account? <a href="auth-register.html"
+                            class="text-dark fw-bold ms-1 link-offset-3 text-decoration-underline"><b>Sign up</b></a>
+                    </p>
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
         </div>
+        <!-- end container -->
+    </div>
+    <!-- end page -->
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <footer class="footer footer-alt fw-medium">
+        <span class="text-dark">
+            <script>
+                document.write(new Date().getFullYear())
+            </script> © Techmin - Theme by Techzaa
+        </span>
+    </footer>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+    <!-- Vendor js -->
+    <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+    <script src="{{ asset('assets/vendor/lucide/umd/lucide.min.js') }}"></script>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+    <!-- App js -->
+    <script src="{{ asset('assets/js/app.min.js') }}"></script>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+</body>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+</html>
