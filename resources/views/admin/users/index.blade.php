@@ -166,7 +166,7 @@
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <form method="POST" action="{{ route('admin.users.toggle-verification', $user) }}" class="d-inline">
+                                                            <form method="POST" action="{{ route('admin.users.toggleVerification', $user) }}" class="d-inline">
                                                                 @csrf
                                                                 @method('PATCH')
                                                                 <button type="submit" class="dropdown-item">
@@ -255,7 +255,7 @@
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <i class="ri-user-shared-line me-2"></i>
                 <strong>Impersonating User:</strong> You are currently viewing the system as another user.
-                <form method="POST" action="{{ route('admin.users.stop-impersonating') }}" class="d-inline ms-2">
+                <form method="POST" action="{{ route('admin.users.stopImpersonating') }}" class="d-inline ms-2">
                     @csrf
                     <button type="submit" class="btn btn-sm btn-outline-warning">
                         <i class="ri-logout-box-line me-1"></i> Stop Impersonating
