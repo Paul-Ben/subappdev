@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Payment;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,13 @@ class User extends Authenticatable
     public function activeSubscription()
     {
         return $this->subscriptions()->where('status', 'active')->first();
+    }
+
+    /**
+     * Get the user's payments.
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 }
