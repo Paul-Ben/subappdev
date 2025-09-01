@@ -421,6 +421,13 @@
 		                </a>
 		            </li>
 
+		            <li class="side-nav-item">
+		                <a href="{{route('transactions.index')}}" class="side-nav-link">
+		                    <i class="ri-file-list-line"></i>
+		                    <span> Transaction History </span>
+		                </a>
+		            </li>
+
 		            @hasrole('admin')
 		            <li class="side-nav-title">Admin</li>
             
