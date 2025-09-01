@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\SubscriptionPlan;
 
 class SubscriptionPlanSeeder extends Seeder
 {
@@ -35,7 +36,7 @@ class SubscriptionPlanSeeder extends Seeder
                 'name' => 'Monthly Plan',
                 'slug' => 'monthly',
                 'description' => 'Full-featured video conferencing with monthly billing',
-                'price' => 5000.00, // ₦5,000
+                'price' => 500000, // ₦5,000 (stored in kobo)
                 'billing_cycle' => 'monthly',
                 'meeting_duration_limit' => null, // Unlimited
                 'max_participants' => 100,
@@ -52,7 +53,7 @@ class SubscriptionPlanSeeder extends Seeder
                 'name' => 'Yearly Plan',
                 'slug' => 'yearly',
                 'description' => 'Full-featured video conferencing with yearly billing (2 months free)',
-                'price' => 50000.00, // ₦50,000 (equivalent to 10 months)
+                'price' => 5000000, // ₦50,000 (stored in kobo, equivalent to 10 months)
                 'billing_cycle' => 'yearly',
                 'meeting_duration_limit' => null, // Unlimited
                 'max_participants' => 100,
@@ -67,6 +68,11 @@ class SubscriptionPlanSeeder extends Seeder
             ],
         ];
 
-        DB::table('subscription_plans')->insert($plans);
+        foreach ($plans as $plan) {
+            SubscriptionPlan::updateOrCreate(
+                ['slug' => $plan['slug']],
+                $plan
+            );
+        }
     }
 }
