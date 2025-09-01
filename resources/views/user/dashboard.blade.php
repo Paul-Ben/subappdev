@@ -18,6 +18,9 @@
                     <p class="card-text">You're currently subscribed to our 
                         @if(Auth::user()->activeSubscription())
                             <strong>{{ Auth::user()->activeSubscription()->subscriptionPlan->name }}</strong>
+                            @if(Auth::user()->activeSubscription()->ends_at)
+                                <br><small class="text-muted">Expires on {{ Auth::user()->activeSubscription()->ends_at->format('M d, Y') }}</small>
+                            @endif
                         @else
                             <strong>Free Plan</strong>
                         @endif
@@ -72,7 +75,7 @@
                                     <h3 class="text-primary">₦{{ number_format($plan->price / 100, 2) }}</h3>
                                     <p class="text-muted">{{ $plan->name === 'Yearly Plan' ? 'per year' : ($plan->name === 'Monthly Plan' ? 'per month' : 'free forever') }}</p>
                                     @if($plan->name !== 'Yearly Plan')
-                                        <a href="#" class="btn btn-primary">Upgrade Plan</a>
+                                        <a href="{{ route('subscription.plans') }}" class="btn btn-primary">Upgrade Plan</a>
                                     @endif
                                 </div>
                             </div>
@@ -120,6 +123,28 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4 mt-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="ri-file-list-line text-secondary" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-3">Transaction History</h5>
+                    <p class="card-text">View your payment history and receipts</p>
+                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">View History</a>
+                </div>
+            </div>
+        </div>
+        @if(Auth::user()->activeSubscription() && Auth::user()->activeSubscription()->subscriptionPlan->name === 'Free Plan')
+        <div class="col-md-4 mt-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="ri-arrow-up-line text-warning" style="font-size: 2rem;"></i>
+                    <h5 class="card-title mt-3">Upgrade Plan</h5>
+                    <p class="card-text">Get more features with premium plans</p>
+                    <a href="{{ route('subscription.plans') }}" class="btn btn-warning">Upgrade Now</a>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection
