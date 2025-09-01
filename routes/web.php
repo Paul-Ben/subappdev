@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     
     // User Management
@@ -36,14 +36,19 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 });
 
 // User routes
-Route::middleware(['auth', 'role:user,admin'])->prefix('user')->group(function () {
+Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 });
 
 // Redirect after login based on role
 Route::middleware('auth')->get('/dashboard', function () {
     $user = Auth::user();
-    if ($user && $user->hasRole('admin')) {
+    if ($user && \DB::table('model_has_roles')
+        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+        ->where('model_has_roles.model_id', $user->id)
+        ->where('model_has_roles.model_type', get_class($user))
+        ->where('roles.name', 'admin')
+        ->exists()) {
         return redirect()->route('admin.dashboard');
     }
     return redirect()->route('user.dashboard');
