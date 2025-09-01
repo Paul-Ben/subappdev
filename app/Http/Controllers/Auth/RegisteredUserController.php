@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -40,6 +42,22 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Assign user role
+        $user->assignRole('user');
+
+        // Get the free plan and create subscription
+        $freePlan = SubscriptionPlan::where('name', 'Free Plan')->first();
+        if ($freePlan) {
+            Subscription::create([
+                'user_id' => $user->id,
+                'subscription_plan_id' => $freePlan->id,
+                'status' => 'active',
+                'starts_at' => now(),
+                'amount_paid' => 0,
+                'currency' => 'NGN',
+            ]);
+        }
 
         event(new Registered($user));
 
