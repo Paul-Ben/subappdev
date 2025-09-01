@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\SubscriptionPlanController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -40,17 +44,23 @@ Route::middleware(['auth', 'role:user'])->prefix('user')->group(function () {
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 });
 
+// Subscription routes
+Route::middleware('auth')->group(function () {
+    Route::get('/subscription/plans', [SubscriptionController::class, 'showPlans'])->name('subscription.plans');
+    Route::post('/subscription/initiate-upgrade', [SubscriptionController::class, 'initiatePlanUpgrade'])->name('subscription.initiate-upgrade');
+    
+    // Payment routes
+    Route::match(['get', 'post'], '/payment/initialize', [PaymentController::class, 'initializePayment'])->name('payment.initialize');
+    Route::get('/payment/callback', [PaymentController::class, 'handleCallback'])->name('payment.callback');
+    
+    // Transaction routes
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{payment}/receipt', [TransactionController::class, 'showReceipt'])->name('transactions.receipt');
+    Route::get('/transactions/{payment}/download', [TransactionController::class, 'downloadReceipt'])->name('transactions.download');
+});
+
 // Redirect after login based on role
 Route::middleware('auth')->get('/dashboard', function () {
-    $user = Auth::user();
-    if ($user && \DB::table('model_has_roles')
-        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-        ->where('model_has_roles.model_id', $user->id)
-        ->where('model_has_roles.model_type', get_class($user))
-        ->where('roles.name', 'admin')
-        ->exists()) {
-        return redirect()->route('admin.dashboard');
-    }
     return redirect()->route('user.dashboard');
 })->name('dashboard');
 
