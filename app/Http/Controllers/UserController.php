@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +22,14 @@ class UserController extends Controller
      */
     public function dashboard()
     {
-        return view('user.dashboard');
+        /** @var User $user */
+        $user = Auth::user();
+        $currentSubscription = $user->activeSubscription();
+        
+        return view('user.dashboard', [
+            'currentSubscription' => $currentSubscription,
+            'subscriptionPlan' => $currentSubscription ? $currentSubscription->subscriptionPlan : null
+        ]);
     }
 
     /**
