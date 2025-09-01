@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,7 +24,14 @@ Route::middleware('auth')->group(function () {
 // Admin routes
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
+    
+    // User Management
+    Route::resource('users', UserController::class, ['as' => 'admin']);
+    Route::patch('/users/{user}/toggle-verification', [UserController::class, 'toggleVerification'])->name('admin.users.toggleVerification');
+    Route::post('/users/{user}/impersonate', [UserController::class, 'impersonate'])->name('admin.users.impersonate');
+    Route::post('/stop-impersonating', [UserController::class, 'stopImpersonating'])->name('admin.users.stopImpersonating');
+    
+    // Subscription Plans
     Route::resource('subscription-plans', SubscriptionPlanController::class);
 });
 
@@ -34,7 +42,8 @@ Route::middleware(['auth', 'role:user,admin'])->prefix('user')->group(function (
 
 // Redirect after login based on role
 Route::middleware('auth')->get('/dashboard', function () {
-    if (auth()->user()->hasRole('admin')) {
+    $user = Auth::user();
+    if ($user && $user->hasRole('admin')) {
         return redirect()->route('admin.dashboard');
     }
     return redirect()->route('user.dashboard');

@@ -424,10 +424,25 @@
 		            <li class="side-nav-title">Admin</li>
             
             <li class="side-nav-item">
-                <a href="{{route('admin.users')}}" class="side-nav-link">
-                    <i class="ri-user-line"></i>
-                    <span> Users </span>
+                <a data-bs-toggle="collapse" href="#sidebarUserManagement" aria-expanded="false" aria-controls="sidebarUserManagement" class="side-nav-link">
+                    <i class="ri-user-settings-line"></i>
+                    <span> User Management </span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <div class="collapse" id="sidebarUserManagement">
+                    <ul class="side-nav-second-level">
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{route('admin.users.index')}}">
+                                <i class="ri-user-line me-1"></i> All Users
+                            </a>
+                        </li>
+                        <li class="side-nav-item">
+                            <a class="side-nav-link" href="{{route('admin.users.create')}}">
+                                <i class="ri-user-add-line me-1"></i> Add New User
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
            
             <li class="side-nav-item">
