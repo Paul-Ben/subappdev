@@ -38,7 +38,8 @@ return [
     'credo' => [
         'public_key' => env('CREDO_PUBLIC_KEY'),
         'secret_key' => env('CREDO_SECRET_KEY'),
-        'base_url' => env('CREDO_BASE_URL', 'https://api.credocentral.com'),
-    ],
+        'base_url' => env('CREDO_BASE_URL'),
+        // , 'https://api.credocentral.com'
+    ],  
 
 ];
