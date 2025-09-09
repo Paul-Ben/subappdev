@@ -87,7 +87,7 @@ class SubscriptionPlan extends Model
             return 'Free';
         }
         
-        return '₦' . number_format($this->price, 0);
+        return '₦' . number_format($this->price / 100, 2);
     }
 
     /**
