@@ -31,10 +31,10 @@
                                 <div class="d-flex flex-column h-100">
                                     <div class="auth-brand p-4 text-center">
                                         <a href="index.html" class="logo-light">
-                                            <img src="{{asset('assets/images/logo.png')}}" alt="logo" height="28">
+                                            <img src="{{asset('logo/BDIC_Logo.png')}}" alt="logo" height="48">
                                         </a>
                                         <a href="index.html" class="logo-dark">
-                                            <img src="{{asset('assets/images/logo-dark.png')}}" alt="dark logo" height="28">
+                                            <img src="{{asset('logo/BDIC_Logo.png')}}" alt="dark logo" height="48">
                                         </a>
                                     </div>
                                     <div class="p-4 my-auto text-center">
@@ -104,7 +104,7 @@
                                 </div>
                             </div> <!-- end col -->
                             <div class="col-lg-6 d-none d-lg-block">
-                                <img src="{{ asset('assets/images/auth-img.jpg') }}" alt=""
+                                <img src="{{ asset('assets/images/meeting.png') }}" lazyload alt=""
                                     class="img-fluid rounded h-100">
                             </div>
                         </div>
