@@ -77,7 +77,7 @@
 														</td>
 														<td>
 															<div class="d-flex flex-column">
-																<span class="fw-semibold">₦{{ number_format($subscription->amount_paid, 2) }}</span>
+																<span class="fw-semibold">₦{{ number_format($subscription->amount_paid / 100, 2) }}</span>
 																<small class="text-muted">{{ $subscription->currency }}</small>
 															</div>
 														</td>
