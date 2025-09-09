@@ -451,6 +451,13 @@
                     <span> Subscription Plans </span>
                 </a>
             </li>
+            
+            <li class="side-nav-item">
+                <a href="{{route('admin.subscriptions')}}" class="side-nav-link">
+                    <i class="ri-user-star-line"></i>
+                    <span> Subscriptions </span>
+                </a>
+            </li>
 
             {{-- <li class="side-nav-title">App</li>
             
