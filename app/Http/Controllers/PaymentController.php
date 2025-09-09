@@ -59,7 +59,7 @@ class PaymentController extends Controller
             
             // Initialize payment with Credo API
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.credo.secret_key'),
+                'Authorization' => config('services.credo.public_key'),
                 'Content-Type' => 'application/json',
             ])->post(config('services.credo.base_url') . '/transaction/initialize', $paymentData);
             
@@ -103,13 +103,14 @@ class PaymentController extends Controller
         try {
             // Verify payment with Credo API
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.credo.secret_key'),
-            ])->get(config('services.credo.base_url') . '/transaction/verify/' . $reference);
+                'Authorization' => config('services.credo.secret_key'),
+            ])->get(config('services.credo.base_url') . '/transaction/' . $reference . '/verify');
             
             if ($response->successful()) {
                 $data = $response->json();
                 
-                if ($data['status'] === 'success' && $data['data']['status'] === 'success') {
+                // Check for successful payment based on Credo's response format
+                if ($data['status'] == 200 && $data['message'] === 'Successfully processed' && $data['data']['status'] == 0) {
                     // Payment successful, upgrade user subscription
                     $this->upgradeUserSubscription($data['data']);
                     
@@ -142,9 +143,24 @@ class PaymentController extends Controller
      */
     private function upgradeUserSubscription($paymentData)
     {
-        $userId = $paymentData['metadata']['user_id'];
-        $planId = $paymentData['metadata']['plan_id'];
-        $amount = $paymentData['amount'] * 100; // Convert back to kobo
+        // Parse metadata from Credo's format
+        $metadata = [];
+        if (isset($paymentData['metadata']) && is_array($paymentData['metadata'])) {
+            foreach ($paymentData['metadata'] as $item) {
+                if (isset($item['insightTag']) && isset($item['insightTagValue'])) {
+                    $metadata[$item['insightTag']] = $item['insightTagValue'];
+                }
+            }
+        }
+        
+        $userId = $metadata['user_id'] ?? null;
+        $planId = $metadata['plan_id'] ?? null;
+        $amount = ($paymentData['transAmount'] ?? $paymentData['debitedAmount']) * 100; // Convert from naira to kobo
+        
+        if (!$userId || !$planId) {
+            Log::error('Missing user_id or plan_id in payment metadata', $paymentData);
+            throw new \Exception('Invalid payment metadata');
+        }
         
         $user = User::findOrFail($userId);
         $plan = SubscriptionPlan::findOrFail($planId);
@@ -173,7 +189,7 @@ class PaymentController extends Controller
             'amount_paid' => $amount,
             'currency' => 'NGN',
             'metadata' => [
-                'payment_reference' => $paymentData['reference'],
+                'payment_reference' => $paymentData['transRef'] ?? $paymentData['reference'] ?? 'N/A',
                 'payment_method' => 'credo',
                 'upgraded_from' => $currentSubscription ? $currentSubscription->subscriptionPlan->name : 'Free Plan'
             ]
@@ -183,7 +199,7 @@ class PaymentController extends Controller
         Payment::create([
             'user_id' => $userId,
             'subscription_id' => $subscription->id,
-            'payment_reference' => $paymentData['reference'],
+            'payment_reference' => $paymentData['transRef'] ?? $paymentData['reference'] ?? 'UNKNOWN',
             'gateway' => 'credo',
             'amount' => $amount,
             'status' => 'completed',
@@ -196,7 +212,7 @@ class PaymentController extends Controller
             'user_id' => $userId,
             'plan_id' => $planId,
             'amount' => $amount,
-            'reference' => $paymentData['reference']
+            'reference' => $paymentData['transRef'] ?? $paymentData['reference'] ?? 'UNKNOWN'
         ]);
     }
 }
