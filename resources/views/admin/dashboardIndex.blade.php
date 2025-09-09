@@ -414,7 +414,7 @@
 		            <li class="side-nav-title">Main</li>
 
 		            <li class="side-nav-item">
-		                <a href="{{route('dashboard')}}" class="side-nav-link">
+		                <a href="{{route('admin.dashboard')}}" class="side-nav-link">
 		                    <i class="ri-dashboard-2-line"></i>
 		                    <span> Dashboard </span>
 		                    <span class="badge bg-success float-end">9+</span>
@@ -1134,6 +1134,8 @@
 
 	<!-- App js -->
 	<script src="{{asset('assets/js/app.min.js')}}"></script>
+
+	@stack('scripts')
 
 </body>
 
