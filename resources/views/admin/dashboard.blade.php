@@ -6,32 +6,32 @@
         <div class="row">
             <div class="col-xl-4">
                 <div class="card overflow-hidden border-top-0">
-                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88" aria-valuemin="0"
+                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="{{ $revenueGrowthPercentage > 0 ? min($revenueGrowthPercentage, 100) : 0 }}" aria-valuemin="0"
                         aria-valuemax="100">
-                        <div class="progress-bar bg-primary" style="width: 90%"></div>
+                        <div class="progress-bar bg-primary" style="width: {{ $revenueGrowthPercentage > 0 ? min($revenueGrowthPercentage, 100) : 10 }}%"></div>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="">
-                                <p class="text-muted fw-semibold fs-16 mb-1">Daily average orders</p>
+                                <p class="text-muted fw-semibold fs-16 mb-1">Monthly Revenue</p>
                                 <p class="text-muted mb-4">
-                                    <span class="badge bg-success-subtle text-success">
-                                        <i class="bi bi-graph-up-arrow me-1"></i> 1.33%
+                                    <span class="badge {{ $revenueGrowthPercentage >= 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                        <i class="bi {{ $revenueGrowthPercentage >= 0 ? 'bi-graph-up-arrow' : 'bi-graph-down-arrow' }} me-1"></i> {{ abs($revenueGrowthPercentage) }}%
                                     </span>
                                     vs last month
                                 </p>
                             </div>
                             <div class="avatar-sm mb-4">
                                 <div class="avatar-title bg-primary-subtle text-primary fs-24 rounded">
-                                    <i class="bi bi-receipt"></i>
+                                    <i class="bi bi-currency-dollar"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                            <h3 class="mb-0 d-flex"><i class="bi bi-currency-dollar"></i>1,226.71k </h3>
-                            <div class="d-flex align-items-end h-100">
+                            <h3 class="mb-0 d-flex">₦{{ number_format($thisMonthRevenue / 100, 2) }}</h3>
+                            {{-- <div class="d-flex align-items-end h-100">
                                 <div id="daily-orders" data-colors="#007aff"></div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
@@ -39,17 +39,18 @@
 
             <div class="col-xl-4">
                 <div class="card overflow-hidden border-top-0">
-                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
+                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="{{ $userGrowthPercentage > 0 ? min($userGrowthPercentage, 100) : 0 }}"
                         aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar bg-dark" style="width: 40%"></div>
+                        <div class="progress-bar bg-dark" style="width: {{ $userGrowthPercentage > 0 ? min($userGrowthPercentage, 100) : 10 }}%"></div>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="">
-                                <p class="text-muted fw-semibold fs-16 mb-1">Active users</p>
-                                <p class="text-muted mb-4"><span class="badge bg-danger-subtle text-danger"><i
-                                            class="bi bi-graph-down-arrow me-1"></i> 5.27%</span> vs last
-                                    month
+                                <p class="text-muted fw-semibold fs-16 mb-1">Total Users</p>
+                                <p class="text-muted mb-4">
+                                    <span class="badge {{ $userGrowthPercentage >= 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                        <i class="bi {{ $userGrowthPercentage >= 0 ? 'bi-graph-up-arrow' : 'bi-graph-down-arrow' }} me-1"></i> {{ abs($userGrowthPercentage) }}%
+                                    </span> vs last month
                                 </p>
                             </div>
                             <div class="avatar-sm mb-4">
@@ -59,10 +60,10 @@
                             </div>
                         </div>
                         <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                            <h3 class="mb-0 d-flex"><i class="bi bi-person"></i> 1,226.71k </h3>
-                            <div class="d-flex align-items-end h-100">
+                            <h3 class="mb-0 d-flex">{{ number_format($totalUsers) }}</h3>
+                            {{-- <div class="d-flex align-items-end h-100">
                                 <div id="new-leads-chart" data-colors="#404040"></div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
@@ -70,31 +71,32 @@
 
             <div class="col-xl-4">
                 <div class="card overflow-hidden border-top-0">
-                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="88"
+                    <div class="progress progress-sm rounded-0 bg-light" role="progressbar" aria-valuenow="{{ $subscriptionGrowthPercentage > 0 ? min($subscriptionGrowthPercentage, 100) : 0 }}"
                         aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar bg-danger" style="width: 60%"></div>
+                        <div class="progress-bar bg-danger" style="width: {{ $subscriptionGrowthPercentage > 0 ? min($subscriptionGrowthPercentage, 100) : 10 }}%"></div>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="">
-                                <p class="text-muted fw-semibold fs-16 mb-1">Booked Revenue</p>
+                                <p class="text-muted fw-semibold fs-16 mb-1">Active Subscriptions</p>
                                 <p class="text-muted mb-4">
-                                    <span class="badge bg-success-subtle text-success"><i
-                                            class="bi bi-graph-up-arrow me-1"></i> 11.8%</span>
+                                    <span class="badge {{ $subscriptionGrowthPercentage >= 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                        <i class="bi {{ $subscriptionGrowthPercentage >= 0 ? 'bi-graph-up-arrow' : 'bi-graph-down-arrow' }} me-1"></i> {{ abs($subscriptionGrowthPercentage) }}%
+                                    </span>
                                     vs last month
                                 </p>
                             </div>
                             <div class="avatar-sm mb-4">
                                 <div class="avatar-title bg-danger-subtle text-danger fs-24 rounded">
-                                    <i class="bi bi-clipboard-data"></i>
+                                    <i class="bi bi-clipboard-check"></i>
                                 </div>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-end">
-                            <h3 class="mb-0 d-flex"><i class="bi bi-currency-dollar"></i>12,029.71k </h3>
-                            <div class="d-flex align-items-end h-100">
+                            <h3 class="mb-0 d-flex">{{ number_format($activeSubscriptions) }}</h3>
+                            {{-- <div class="d-flex align-items-end h-100">
                                 <div id="booked-revenue-chart" data-colors="#bb3939"></div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div><!-- end card-body -->
                 </div><!-- end card -->
@@ -311,27 +313,27 @@
 
                             <div class="row text-center">
                                 <div class="col">
-                                    <p class="text-muted mt-3">Current Week</p>
+                                    <p class="text-muted mt-3">This Month</p>
                                     <h3 class="mb-0">
-                                        <span>$506.54</span>
+                                        <span>₦{{ number_format($thisMonthRevenue / 100, 2) }}</span>
                                     </h3>
                                 </div>
                                 <div class="col">
-                                    <p class="text-muted mt-3">Previous Week</p>
+                                    <p class="text-muted mt-3">Last Month</p>
                                     <h3 class=" mb-0">
-                                        <span>$305.25</span>
+                                        <span>₦{{ number_format($lastMonthRevenue / 100, 2) }}</span>
                                     </h3>
                                 </div>
                                 <div class="col">
-                                    <p class="text-muted mt-3">Conversation</p>
+                                    <p class="text-muted mt-3">Growth</p>
                                     <h3 class="mb-0">
-                                        <span>3.27%</span>
+                                        <span class="{{ $revenueGrowthPercentage >= 0 ? 'text-success' : 'text-danger' }}">{{ number_format($revenueGrowthPercentage, 1) }}%</span>
                                     </h3>
                                 </div>
                                 <div class="col">
-                                    <p class="text-muted mt-3">Customers</p>
+                                    <p class="text-muted mt-3">Total Users</p>
                                     <h3 class=" mb-0">
-                                        <span>3k</span>
+                                        <span>{{ number_format($totalUsers) }}</span>
                                     </h3>
                                 </div>
                             </div>
@@ -709,3 +711,123 @@
         <!-- end row -->
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Update revenue chart with real data
+    document.addEventListener('DOMContentLoaded', function() {
+        // Revenue chart data from controller
+        var monthlyRevenue = @json($monthlyRevenue);
+        var monthLabels = @json($monthLabels);
+        
+        // Update revenue report chart
+        var revenueOptions = {
+            chart: {
+                type: 'area',
+                height: 360,
+                toolbar: { show: false }
+            },
+            series: [{
+                name: 'Revenue (₦)',
+                data: monthlyRevenue.map(function(amount) {
+                    return (amount / 100).toFixed(2);
+                })
+            }],
+            stroke: {
+                curve: 'smooth',
+                width: 3
+            },
+            grid: {
+                xaxis: { lines: { show: true } },
+                yaxis: { lines: { show: true } }
+            },
+            colors: ['#007aff'],
+            xaxis: {
+                categories: monthLabels
+            },
+            legend: { show: false },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    inverseColors: false,
+                    opacityFrom: 0.4,
+                    opacityTo: 0.1,
+                    stops: [30, 100, 100, 100]
+                }
+            },
+            dataLabels: { enabled: false },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return '₦' + parseFloat(val).toLocaleString();
+                    }
+                }
+            }
+        };
+        
+        var revenueChart = new ApexCharts(document.querySelector('#revenue-report'), revenueOptions);
+        revenueChart.render();
+        
+        // Update other charts with real data
+        var userGrowthData = @json($userGrowthData);
+        var subscriptionGrowthData = @json($subscriptionGrowthData);
+        
+        // New leads chart (user growth)
+        var leadsOptions = {
+            chart: {
+                type: 'line',
+                height: 80,
+                sparkline: { enabled: true }
+            },
+            series: [{
+                data: userGrowthData
+            }],
+            stroke: {
+                width: 2,
+                curve: 'straight'
+            },
+            markers: { size: 0 },
+            colors: ['#404040'],
+            tooltip: {
+                fixed: { enabled: false },
+                y: {
+                    formatter: function(val) {
+                        return val + ' users';
+                    }
+                }
+            }
+        };
+        
+        var leadsChart = new ApexCharts(document.querySelector('#new-leads-chart'), leadsOptions);
+        leadsChart.render();
+        
+        // Booked revenue chart (subscription growth)
+        var bookedOptions = {
+            chart: {
+                type: 'bar',
+                height: 80,
+                sparkline: { enabled: true }
+            },
+            plotOptions: {
+                bar: { columnWidth: '60%' }
+            },
+            colors: ['#bb3939'],
+            series: [{
+                data: subscriptionGrowthData
+            }],
+            tooltip: {
+                fixed: { enabled: false },
+                y: {
+                    formatter: function(val) {
+                        return val + ' subscriptions';
+                    }
+                }
+            }
+        };
+        
+        var bookedChart = new ApexCharts(document.querySelector('#booked-revenue-chart'), bookedOptions);
+        bookedChart.render();
+    });
+</script>
+@endpush

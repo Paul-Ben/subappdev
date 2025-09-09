@@ -414,7 +414,7 @@
 		            <li class="side-nav-title">Main</li>
 
 		            <li class="side-nav-item">
-		                <a href="{{route('dashboard')}}" class="side-nav-link">
+		                <a href="{{route('admin.dashboard')}}" class="side-nav-link">
 		                    <i class="ri-dashboard-2-line"></i>
 		                    <span> Dashboard </span>
 		                    <span class="badge bg-success float-end">9+</span>
@@ -449,6 +449,13 @@
                 <a href="{{route('subscription-plans.index')}}" class="side-nav-link">
                     <i class="ri-price-tag-3-line"></i>
                     <span> Subscription Plans </span>
+                </a>
+            </li>
+            
+            <li class="side-nav-item">
+                <a href="{{route('admin.subscriptions')}}" class="side-nav-link">
+                    <i class="ri-user-star-line"></i>
+                    <span> Subscriptions </span>
                 </a>
             </li>
 
@@ -1127,6 +1134,8 @@
 
 	<!-- App js -->
 	<script src="{{asset('assets/js/app.min.js')}}"></script>
+
+	@stack('scripts')
 
 </body>
 

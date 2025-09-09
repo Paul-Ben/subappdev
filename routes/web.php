@@ -37,6 +37,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     
     // Subscription Plans
     Route::resource('subscription-plans', SubscriptionPlanController::class);
+    
+    // Subscriptions Management
+    Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
 });
 
 // User routes
