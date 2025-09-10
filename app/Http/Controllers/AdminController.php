@@ -77,11 +77,18 @@ class AdminController extends Controller
                 ->count();
         }
 
+        // Payment History (recent 10 payments)
+        $recentPayments = Payment::with(['user', 'subscription.subscriptionPlan'])
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get();
+
         return view('admin.dashboard', compact(
             'totalUsers', 'newUsersThisMonth', 'userGrowthPercentage',
             'totalSubscriptions', 'activeSubscriptions', 'subscriptionGrowthPercentage',
             'totalRevenue', 'thisMonthRevenue', 'lastMonthRevenue', 'revenueGrowthPercentage',
-            'monthlyRevenue', 'monthLabels', 'userGrowthData', 'subscriptionGrowthData'
+            'monthlyRevenue', 'monthLabels', 'userGrowthData', 'subscriptionGrowthData',
+            'recentPayments'
         ));
     }
 
@@ -99,5 +106,14 @@ class AdminController extends Controller
             ->paginate(20);
             
         return view('admin.subscriptions', compact('subscriptions'));
+    }
+
+    public function payments()
+    {
+        $payments = Payment::with(['user', 'subscription.subscriptionPlan'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+            
+        return view('admin.payments', compact('payments'));
     }
 }
