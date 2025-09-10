@@ -476,18 +476,14 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between flex-wrap align-items-center">
                         <div>
-                            <h4 class="card-title">Recent Order</h4>
-                            <p class="text-muted fw-semibold mb-0">Order Based on Payment</p>
+                            <h4 class="card-title">Recent Payment History</h4>
+                            <p class="text-muted fw-semibold mb-0">Latest subscription payments from users</p>
                         </div>
 
                         <div class="">
-                            <a class="btn btn-outline-secondary me-2">
-                                <i class="mdi mdi-filter-outline pe-1 lh-1"></i>Filter
+                            <a href="{{ route('admin.payments') }}" class="btn btn-outline-primary">
+                                View All Payments
                             </a>
-                            <a class="btn btn-outline-primary">
-                                See All
-                            </a>
-
                         </div>
                     </div>
                     <div class="card-body p-0">
@@ -495,210 +491,66 @@
                             <table class="table align-middle mb-0">
                                 <thead>
                                     <tr class="table-light text-capitalize">
-                                        <th>Customer</th>
-                                        <th>Price</th>
-                                        <th>Location</th>
-                                        <th>Requested by</th>
-                                        <th>Order</th>
+                                        <th>User</th>
+                                        <th>Amount</th>
+                                        <th>Plan</th>
+                                        <th>Gateway</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <!-- end table heading -->
 
                                 <tbody>
+                                    @forelse($recentPayments as $payment)
                                     <tr>
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-9.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
+                                                    <div class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                        {{ strtoupper(substr($payment->user->name, 0, 2)) }}
+                                                    </div>
                                                 </div>
                                                 <div class="ps-2">
-                                                    <h5 class="mb-1">Dana Graves</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792771583</p>
+                                                    <h5 class="mb-1">{{ $payment->user->name }}</h5>
+                                                    <p class="text-muted fs-6 mb-0">{{ $payment->payment_reference }}</p>
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
-                                            <span class="fw-semibold">$98.59</span>
+                                            <span class="fw-semibold">₦{{ number_format($payment->amount / 100, 2) }}</span>
                                         </td>
                                         <td>
-                                            <h5 class="mb-0 ms-1">America</h5>
+                                            <h5 class="mb-0 ms-1">{{ $payment->subscription->subscriptionPlan->name ?? 'N/A' }}</h5>
                                         </td>
                                         <td>
-                                            <h5 class="mb-0">Wade Warren</h5>
+                                            <span class="text-capitalize">{{ $payment->gateway }}</span>
                                         </td>
                                         <td>
-                                            <span class="badge bg-primary-subtle text-primary">Pending
-                                                Approval</span>
+                                            @if($payment->status === 'completed')
+                                                <span class="badge bg-success-subtle text-success">Completed</span>
+                                            @elseif($payment->status === 'pending')
+                                                <span class="badge bg-warning-subtle text-warning">Pending</span>
+                                            @elseif($payment->status === 'failed')
+                                                <span class="badge bg-danger-subtle text-danger">Failed</span>
+                                            @else
+                                                <span class="badge bg-secondary-subtle text-secondary">{{ ucfirst($payment->status) }}</span>
+                                            @endif
                                         </td>
-
+                                        <td>
+                                            <small class="text-muted">{{ $payment->created_at->format('M d, Y') }}</small>
+                                        </td>
                                     </tr>
-
+                                    @empty
                                     <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-3.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1 text-capitalize">Floyd Smith</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792772493</p>
-                                                </div>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="bi bi-credit-card fs-1 mb-2 d-block"></i>
+                                                No payment history available
                                             </div>
                                         </td>
-                                        <td>
-                                            <span class="fw-semibold">$32.59</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Russia</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0">Esther Howard</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-danger-subtle text-danger">Cancelled
-                                                Requested</span>
-                                        </td>
                                     </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-6.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1">Fernanda Azevedo</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792771583</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$18.24</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Brazil</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0">Brooklyn...</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-success-subtle text-success">Approved</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-4.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1">Martine Tollmache</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792780452</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$42.24</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Los Angeles</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 text-capitalize">Arlene Mccoy</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-primary-subtle text-primary">Pending
-                                                Approval</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-11.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1">Freja Sjöberg</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792776427</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$113.39</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Miami</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0">Jerome Bell</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-danger-subtle text-danger">Cancalled
-                                                Requested</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-7.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1">Daniel J. Heim</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792781478</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$10.39</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Indianapolis</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0">Courtney Henry</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-success-subtle text-success">Approved</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-sm">
-                                                    <img src="assets/images/users/avatar-5.jpg" alt=""
-                                                        class="img-fluid rounded-circle">
-                                                </div>
-                                                <div class="ps-2">
-                                                    <h5 class="mb-1">Sandra Fraser</h5>
-                                                    <p class="text-muted fs-6 mb-0">ORD-1562792779615</p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span class="fw-semibold">$95.24</span>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0 ms-1">Stlouis</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="mb-0">Guy Hawkins</h5>
-                                        </td>
-                                        <td>
-                                            <span class="badge bg-danger-subtle text-danger">Cancelled
-                                                requested</span>
-                                        </td>
-                                    </tr>
+                                    @endforelse
                                 </tbody>
                                 <!-- end table body -->
                             </table>
