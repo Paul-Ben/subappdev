@@ -40,6 +40,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     
     // Subscriptions Management
     Route::get('/subscriptions', [AdminController::class, 'subscriptions'])->name('admin.subscriptions');
+    
+    // Payments Management
+    Route::get('/payments', [AdminController::class, 'payments'])->name('admin.payments');
 });
 
 // User routes
