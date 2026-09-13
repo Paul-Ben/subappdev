@@ -80,7 +80,7 @@
                 </div>
             </li>
 
-            <li class="dropdown">
+            {{-- <li class="dropdown">
                 <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <img src="{{asset('assets/images/flags/us.jpg')}}" alt="user-image" class="me-0 me-sm-1" height="12">
                     <span class="align-middle d-none d-lg-inline-block">English</span>
@@ -110,9 +110,9 @@
                     </a>
 
                 </div>
-            </li>
+            </li> --}}
 
-            <li class="dropdown notification-list">
+            {{-- <li class="dropdown notification-list">
                 <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                     <i class="ri-mail-line fs-22"></i>
 
@@ -316,7 +316,7 @@
                     </a>
 
                 </div>
-            </li>
+            </li> --}}
 
             <li class="d-none d-sm-inline-block">
                 <a class="nav-link" data-bs-toggle="offcanvas" href="#theme-settings-offcanvas">
@@ -352,22 +352,22 @@
                     </a>
 
                     <!-- item-->
-                    <a href="pages-profile.html" class="dropdown-item">
+                    {{-- <a href="pages-profile.html" class="dropdown-item">
                         <i class="ri-settings-4-line fs-16 align-middle me-1"></i>
                         <span>Settings</span>
-                    </a>
+                    </a> --}}
 
                     <!-- item-->
-                    <a href="pages-faq.html" class="dropdown-item">
+                    {{-- <a href="pages-faq.html" class="dropdown-item">
                         <i class="ri-customer-service-2-line fs-16 align-middle me-1"></i>
                         <span>Support</span>
-                    </a>
+                    </a> --}}
 
                     <!-- item-->
-                    <a href="auth-lock-screen.html" class="dropdown-item">                
+                    {{-- <a href="auth-lock-screen.html" class="dropdown-item">                
                         <i class="ri-lock-line fs-16 align-middle me-1"></i>
                         <span>Lock Screen</span>
-                    </a>
+                    </a> --}}
 
                     <!-- item-->
                     <form method="POST" action="{{ route('logout') }}">
